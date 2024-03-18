@@ -2,29 +2,17 @@
 A first simple Cloud Foundry Flask app
 
 """
-from flask import Flask
+from flask import Flask, send_from_directory
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')  
 
 # Get port from environment variable or choose 9099 as local default
 port = int(os.getenv("PORT", 9099))
 
 @app.route('/')
 def hello_world():
-    return """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Hello, World!</title>
-    </head>
-    <body>
-        <h1>Hello, World!</h1>
-        <p>Welcome to the demo for University Hradec Králové.</p>
-        <p>I am instance {0}</p>
-    </body>
-</html>    
-""".format(os.getenv("CF_INSTANCE_INDEX", 0))
+    return send_from_directory(app.static_folder, "index.html")
 
 if __name__ == '__main__':
     # Run the app, listening on all IPs with our chosen port number
